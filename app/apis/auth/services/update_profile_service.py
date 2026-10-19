@@ -24,9 +24,9 @@ def update_profile(
     current_user: Annotated[User, Depends(get_current_user)],
     db: Session = Depends(get_db),
 ):
-    db_user = get_user_by_username(db, user.username)
+    db_user = get_user_by_username(db, current_user.username)
 
-    for var, value in user.dict().items():
+    for var, value in user.dict(exclude={"username"}).items():
         if value:
             setattr(db_user, var, value)
 
